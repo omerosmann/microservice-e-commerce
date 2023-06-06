@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: stock-service
+  datasource:
+    username: postgres
+    password: '12345'
+    url: jdbc:postgresql://localhost:5432/stockdb-dev
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
