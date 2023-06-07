@@ -1,4 +1,4 @@
-package com.kodlamaio.stockservice.business.dto.responses.gets;
+package com.kodlamaio.commonpackage.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

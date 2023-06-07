@@ -1,11 +1,11 @@
-package microservice.ecommerce.stockservice.business.kafka.consumer;
+package com.kodlamaio.stockservice.business.kafka.consumer;
 
+import com.kodlamaio.commonpackage.events.sale.SaleCreatedEvent;
+import com.kodlamaio.commonpackage.events.sale.SaleDeletedEvent;
+import com.kodlamaio.stockservice.business.abstracts.ProductService;
+import com.kodlamaio.stockservice.entities.enums.State;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import microservice.ecommerce.commonpackage.events.sale.SaleCreatedEvent;
-import microservice.ecommerce.commonpackage.events.sale.SaleDeletedEvent;
-import microservice.ecommerce.stockservice.business.abstracts.ProductService;
-import microservice.ecommerce.stockservice.entities.enums.State;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +20,8 @@ public class SaleConsumer {
             groupId = "stock-sale-create "
     )
     public void consume(SaleCreatedEvent event) {
-        service.changeStateByProductId(State.Active, event.getProductId());
-        log.info("Rental created event consumed {}", event);
+        service.changeStateByProductId(State.Passive, event.getProductId());
+        log.info("Sale created event consumed {}", event);
     }
 
     @KafkaListener(
@@ -29,7 +29,7 @@ public class SaleConsumer {
             groupId = "stock-sale-delete "
     )
     public void consume(SaleDeletedEvent event) {
-        service.changeStateByProductId(State.Passive, event.getProductId());
-        log.info("Rental created event consumed {}", event);
+        service.changeStateByProductId(State.Active, event.getProductId());
+        log.info("Sale created event consumed {}", event);
     }
 }

@@ -1,12 +1,12 @@
 package com.kodlamaio.stockservice.api.controllers;
 
-import com.kodlamaio.commonpackage.utils.mappers.ModelMapperService;
+import com.kodlamaio.commonpackage.dto.ClientResponse;
 import com.kodlamaio.stockservice.business.abstracts.ProductService;
 import com.kodlamaio.stockservice.business.dto.requests.creates.CreateProductRequest;
 import com.kodlamaio.stockservice.business.dto.requests.updates.UpdateProductRequest;
 import com.kodlamaio.stockservice.business.dto.responses.creates.CreateProductResponse;
 import com.kodlamaio.stockservice.business.dto.responses.gets.GetAllProductsResponse;
-import com.kodlamaio.stockservice.business.dto.responses.gets.GetProductResponse;
+import com.kodlamaio.commonpackage.dto.GetProductResponse;
 import com.kodlamaio.stockservice.business.dto.responses.updates.UpdateProductResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -47,4 +47,9 @@ public class ProductsController {
     @PutMapping("/state/{id}")
     public GetProductResponse stateByChange(@PathVariable UUID id)
     { return service.stateByChange(id); }
+
+    @GetMapping(value = "/check-product-active{productId}")
+    public void checkIfProductActive(@PathVariable UUID id){
+        service.checkIfProductActive(id);
+    }
 }

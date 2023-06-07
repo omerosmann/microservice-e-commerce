@@ -1,3 +1,3 @@
-package microservice.ecommerce.commonpackage.events;
+package com.kodlamaio.commonpackage.events;
 
 public interface Event {}

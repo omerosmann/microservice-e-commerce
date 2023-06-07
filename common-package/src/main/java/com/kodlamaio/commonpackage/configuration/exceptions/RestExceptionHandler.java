@@ -1,9 +1,9 @@
-package microservice.ecommerce.commonpackage.configuration.exceptions;
+package com.kodlamaio.commonpackage.configuration.exceptions;
 
+import com.kodlamaio.commonpackage.utils.constants.ExceptionTypes;
+import com.kodlamaio.commonpackage.utils.exceptions.BusinessException;
+import com.kodlamaio.commonpackage.utils.results.ExceptionResult;
 import jakarta.validation.ValidationException;
-import microservice.ecommerce.commonpackage.utils.constants.ExceptionTypes;
-import microservice.ecommerce.commonpackage.utils.exceptions.BusinessException;
-import microservice.ecommerce.commonpackage.utils.results.ExceptionResult;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;

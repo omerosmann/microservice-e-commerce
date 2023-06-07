@@ -1,12 +1,16 @@
 package com.kodlamaio.stockservice.business.concretes;
 
+import com.kodlamaio.commonpackage.dto.ClientResponse;
+import com.kodlamaio.commonpackage.dto.GetProductResponse;
+import com.kodlamaio.commonpackage.events.stock.ProductCreatedEvent;
+import com.kodlamaio.commonpackage.events.stock.ProductDeletedEvent;
+import com.kodlamaio.commonpackage.kafka.producer.KafkaProducer;
 import com.kodlamaio.commonpackage.utils.mappers.ModelMapperService;
 import com.kodlamaio.stockservice.business.abstracts.ProductService;
 import com.kodlamaio.stockservice.business.dto.requests.creates.CreateProductRequest;
 import com.kodlamaio.stockservice.business.dto.requests.updates.UpdateProductRequest;
 import com.kodlamaio.stockservice.business.dto.responses.creates.CreateProductResponse;
 import com.kodlamaio.stockservice.business.dto.responses.gets.GetAllProductsResponse;
-import com.kodlamaio.stockservice.business.dto.responses.gets.GetProductResponse;
 import com.kodlamaio.stockservice.business.dto.responses.updates.UpdateProductResponse;
 import com.kodlamaio.stockservice.business.rules.ProductBusinessRules;
 import com.kodlamaio.stockservice.entities.Product;
@@ -24,6 +28,7 @@ public class ProductManager implements ProductService {
     private final ProductRepository repository;
     private final ModelMapperService mapper;
     private final ProductBusinessRules rules;
+    private final KafkaProducer producer;
 
     @Override
     public List<GetAllProductsResponse> getAll(boolean includeState) {
@@ -55,7 +60,10 @@ public class ProductManager implements ProductService {
         var product = mapper.forRequest().map(request, Product.class);
         product.setId(UUID.randomUUID());
         product.setState(State.Active);
-        repository.save(product);
+
+        var createdProduct = repository.save(product);
+        sendKafkaProductCreatedEvent(createdProduct);
+
         var response = mapper.forResponse().map(product, CreateProductResponse.class);
 
         return response;
@@ -82,6 +90,8 @@ public class ProductManager implements ProductService {
 
         repository.deleteById(id);
 
+        sendKafkaProductDeletedEvent(id);
+
     }
 
     @Override
@@ -101,6 +111,13 @@ public class ProductManager implements ProductService {
     public void changeStateByProductId(State state, UUID id)
     { repository.changeStateByProductId(state, id); }
 
+    @Override
+    public void checkIfProductActive(UUID id) {
+        rules.checkIfProductExists(id);
+        rules.checkProductActively(id);
+
+    }
+
     private void stateChange(Product product) {
         if (product.getState().equals(State.Active)) { product.setState(State.Passive); }
         else { product.setState(State.Active); }
@@ -112,4 +129,11 @@ public class ProductManager implements ProductService {
         return repository.findAllByStateIsNot(State.Passive);
     }
 
+    private void sendKafkaProductCreatedEvent(Product createdProduct){
+        ProductCreatedEvent event = mapper.forRequest().map(createdProduct, ProductCreatedEvent.class);
+        producer.sendMessage(event, "product-created");
+    }
+
+    private void sendKafkaProductDeletedEvent(UUID id)
+    { producer.sendMessage(new ProductDeletedEvent(id),"product-deleted"); }
 }

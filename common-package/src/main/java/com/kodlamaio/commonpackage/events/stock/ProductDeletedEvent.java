@@ -1,10 +1,10 @@
-package microservice.ecommerce.commonpackage.events.stock;
+package com.kodlamaio.commonpackage.events.stock;
 
+import com.kodlamaio.commonpackage.events.Event;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import microservice.ecommerce.commonpackage.events.Event;
 
 import java.util.UUID;
 

@@ -1,6 +1,4 @@
-package microservice.ecommerce.commonpackage.utils.constants;
-
-import org.apache.kafka.common.protocol.types.Field;
+package com.kodlamaio.commonpackage.utils.constants;
 
 public class Paths {
 
@@ -15,9 +13,5 @@ public class Paths {
     public static class Sale
     { public static final String ServiceBasePackage = "microservice.ecommerce.saleservice"; }
 
-    public static class Payment
-    { public static final String ServiceBasePackage = "microservice.ecommerce.paymentservice"; }
 
-    public static class Invoice
-    { public static final String ServiceBasePackage = "microservice.ecommerce.invoiceservice"; }
 }

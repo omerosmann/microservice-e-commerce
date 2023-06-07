@@ -1,12 +1,14 @@
-package microservice.ecommerce.filterservice.business.kafka.consumer;
+package com.kodlamaio.filterservice.business.kafka.consumer;
 
+import com.kodlamaio.commonpackage.events.stock.CategoryDeletedEvent;
+import com.kodlamaio.commonpackage.events.stock.ProductCreatedEvent;
+import com.kodlamaio.commonpackage.events.stock.ProductDeletedEvent;
+import com.kodlamaio.commonpackage.utils.mappers.ModelMapperService;
+import com.kodlamaio.filterservice.business.abstracts.FilterService;
+import com.kodlamaio.filterservice.entities.Filter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import microservice.ecommerce.commonpackage.events.stock.ProductCreatedEvent;
-import microservice.ecommerce.commonpackage.events.stock.ProductDeletedEvent;
-import microservice.ecommerce.commonpackage.utils.mappers.ModelMapperService;
-import microservice.ecommerce.filterservice.business.abstracts.FilterService;
-import microservice.ecommerce.filterservice.entities.Filter;
+
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
@@ -15,18 +17,18 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class StockConsumer {
     private final FilterService filterService;
-    private final ModelMapperService mapperService;
+    private final ModelMapperService mapper;
 
     @KafkaListener(
             topics  = "product-created",
             groupId = "product-create"
     )
     public void consume(ProductCreatedEvent event){
-        Filter filter = mapperService.forRequest().map(event, Filter.class);
+        Filter filter = mapper.forRequest().map(event, Filter.class);
 
         filterService.add(filter);
 
-        log.info("Car created event consume {}", event);
+        log.info("Product created event consume {}", event);
     }
 
     @KafkaListener(
@@ -34,10 +36,22 @@ public class StockConsumer {
             groupId = "product-delete"
     )
     public void consume(ProductDeletedEvent event){
-        Filter filter = mapperService.forRequest().map(event, Filter.class);
+        Filter filter = mapper.forRequest().map(event, Filter.class);
 
         filterService.deleteByProductId(event.getProductId());
 
-        log.info("Car deleted event consume {}", event);
+        log.info("Product deleted event consume {}", event);
+    }
+
+    @KafkaListener(
+            topics  = "category-deleted",
+            groupId = "category-delete"
+    )
+    public void consume(CategoryDeletedEvent event){
+        Filter filter = mapper.forRequest().map(event, Filter.class);
+
+        filterService.deleteAllByCategoryId(event.getCategoryId());
+
+        log.info("Category deleted event consume {}", event);
     }
 }

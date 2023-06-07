@@ -2,11 +2,12 @@ package com.kodlamaio.stockservice.business.abstracts;
 
 
 
+import com.kodlamaio.commonpackage.dto.ClientResponse;
 import com.kodlamaio.stockservice.business.dto.requests.creates.CreateProductRequest;
 import com.kodlamaio.stockservice.business.dto.requests.updates.UpdateProductRequest;
 import com.kodlamaio.stockservice.business.dto.responses.creates.CreateProductResponse;
 import com.kodlamaio.stockservice.business.dto.responses.gets.GetAllProductsResponse;
-import com.kodlamaio.stockservice.business.dto.responses.gets.GetProductResponse;
+import com.kodlamaio.commonpackage.dto.GetProductResponse;
 import com.kodlamaio.stockservice.business.dto.responses.updates.UpdateProductResponse;
 import com.kodlamaio.stockservice.entities.enums.State;
 
@@ -21,4 +22,6 @@ public interface ProductService {
     void delete (UUID id);
     GetProductResponse stateByChange(UUID id);
     void changeStateByProductId(State state, UUID id);
+    void checkIfProductActive(UUID id);
+
 }

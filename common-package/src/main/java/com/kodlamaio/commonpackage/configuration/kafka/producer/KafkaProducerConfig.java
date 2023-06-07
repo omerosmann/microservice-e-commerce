@@ -1,6 +1,7 @@
-package microservice.ecommerce.commonpackage.configuration.kafka.producer;
+package com.kodlamaio.commonpackage.configuration.kafka.producer;
 
-import microservice.ecommerce.commonpackage.kafka.producer.KafkaProducer;
+
+import com.kodlamaio.commonpackage.kafka.producer.KafkaProducer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.KafkaTemplate;

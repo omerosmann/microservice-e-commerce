@@ -1,9 +1,12 @@
 package com.kodlamaio.stockservice;
 
+import com.kodlamaio.commonpackage.utils.constants.Paths;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
-@SpringBootApplication
+@EnableDiscoveryClient
+@SpringBootApplication(scanBasePackages = {Paths.ConfigurationBasePackage, Paths.Stock.ServiceBasePackage})
 public class StockServiceApplication {
 
 	public static void main(String[] args) {

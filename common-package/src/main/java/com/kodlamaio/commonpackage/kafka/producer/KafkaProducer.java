@@ -1,8 +1,8 @@
-package microservice.ecommerce.commonpackage.kafka.producer;
+package com.kodlamaio.commonpackage.kafka.producer;
 
+import com.kodlamaio.commonpackage.events.Event;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import microservice.ecommerce.commonpackage.events.Event;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.Message;

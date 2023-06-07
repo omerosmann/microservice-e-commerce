@@ -1,4 +1,4 @@
-package microservice.ecommerce.commonpackage.utils.results;
+package com.kodlamaio.commonpackage.utils.results;
 
 import lombok.Getter;
 import lombok.Setter;

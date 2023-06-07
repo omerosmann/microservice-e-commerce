@@ -1,4 +1,4 @@
-package microservice.ecommerce.commonpackage.utils.constants;
+package com.kodlamaio.commonpackage.utils.constants;
 
 public class ExceptionTypes {
     public static class Exception {
