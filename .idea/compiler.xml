@@ -8,11 +8,13 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="stock-service" />
-        <module name="api-gateway" />
-        <module name="filter-service" />
         <module name="discovery-server" />
+        <module name="payment-service" />
         <module name="common-package" />
         <module name="sale-service" />
+        <module name="invoice-service" />
+        <module name="api-gateway" />
+        <module name="filter-service" />
       </profile>
     </annotationProcessing>
   </component>
@@ -22,6 +24,8 @@
       <module name="common-package" options="-parameters" />
       <module name="discovery-server" options="-parameters" />
       <module name="filter-service" options="-parameters" />
+      <module name="invoice-service" options="-parameters" />
+      <module name="payment-service" options="-parameters" />
       <module name="sale-service" options="-parameters" />
       <module name="stock-service" options="-parameters" />
     </option>

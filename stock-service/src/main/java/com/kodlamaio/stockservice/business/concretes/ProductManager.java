@@ -5,6 +5,7 @@ import com.kodlamaio.commonpackage.dto.GetProductResponse;
 import com.kodlamaio.commonpackage.events.stock.ProductCreatedEvent;
 import com.kodlamaio.commonpackage.events.stock.ProductDeletedEvent;
 import com.kodlamaio.commonpackage.kafka.producer.KafkaProducer;
+import com.kodlamaio.commonpackage.utils.exceptions.BusinessException;
 import com.kodlamaio.commonpackage.utils.mappers.ModelMapperService;
 import com.kodlamaio.stockservice.business.abstracts.ProductService;
 import com.kodlamaio.stockservice.business.dto.requests.creates.CreateProductRequest;
@@ -112,10 +113,11 @@ public class ProductManager implements ProductService {
     { repository.changeStateByProductId(state, id); }
 
     @Override
-    public void checkIfProductActive(UUID id) {
-        rules.checkIfProductExists(id);
-        rules.checkProductActively(id);
+    public ClientResponse checkIfProductActive(UUID id) {
+        var response = new ClientResponse();
+        validateProductActive(id, response);
 
+        return response;
     }
 
     private void stateChange(Product product) {
@@ -136,4 +138,15 @@ public class ProductManager implements ProductService {
 
     private void sendKafkaProductDeletedEvent(UUID id)
     { producer.sendMessage(new ProductDeletedEvent(id),"product-deleted"); }
+
+    private void validateProductActive(UUID id, ClientResponse response) {
+        try {
+            rules.checkIfProductExists(id);
+            rules.checkProductActively(id);
+            response.setSuccess(true);
+        }catch (BusinessException exception){
+            response.setSuccess(false);
+            response.setMessage(exception.getMessage());
+        }
+    }
 }
