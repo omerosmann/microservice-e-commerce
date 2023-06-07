@@ -48,8 +48,8 @@ public class ProductsController {
     public GetProductResponse stateByChange(@PathVariable UUID id)
     { return service.stateByChange(id); }
 
-    @GetMapping(value = "/check-product-active{productId}")
-    public void checkIfProductActive(@PathVariable UUID id){
-        service.checkIfProductActive(id);
+    @GetMapping("/check-product-active{productId}")
+    public ClientResponse checkIfProductActive(@PathVariable UUID id){
+        return service.checkIfProductActive(id);
     }
 }

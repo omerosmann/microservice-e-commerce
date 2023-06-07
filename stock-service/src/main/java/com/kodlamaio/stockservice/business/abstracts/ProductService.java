@@ -22,6 +22,6 @@ public interface ProductService {
     void delete (UUID id);
     GetProductResponse stateByChange(UUID id);
     void changeStateByProductId(State state, UUID id);
-    void checkIfProductActive(UUID id);
+    ClientResponse checkIfProductActive(UUID id);
 
 }

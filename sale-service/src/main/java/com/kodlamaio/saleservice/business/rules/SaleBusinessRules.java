@@ -22,5 +22,10 @@ public class SaleBusinessRules {
     public void checkIfQuantity(int quantity)
     { if (quantity <= 0) throw new BusinessException("PRODUCT_NOT_IN_STOCK"); }
 
-
+    public void ensureProductIsActive(UUID productId){
+        var response = stockClient.checkIfProductActive(productId);
+        if (!response.isSuccess()){
+            throw new BusinessException(response.getMessage());
+        }
+    }
 }

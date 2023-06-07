@@ -57,7 +57,7 @@ public class SaleManager implements SaleService {
 
     @Override
     public CreateSaleResponse add(CreateSaleRequest request) {
-        stockClient.checkIfProductActive(request.getProductId());
+        rules.ensureProductIsActive(request.getProductId());
         var sale = mapper.forRequest().map(request, Sale.class);
 
         sale.setId(null);
@@ -106,7 +106,7 @@ public class SaleManager implements SaleService {
     { producer.sendMessage(new SaleCreatedEvent(productId), "sale-created"); }
 
     private void sendKafkaSaleDeletedMessage(UUID id){
-        UUID productId = repository.findById(id).orElseThrow().getProductId();
+        var productId = repository.findById(id).orElseThrow().getProductId();
         producer.sendMessage(new SaleDeletedEvent(productId), "sale-deleted");
     }
 

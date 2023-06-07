@@ -1,6 +1,7 @@
 package com.kodlamaio.saleservice.api.clients.stock;
 
 
+import com.kodlamaio.commonpackage.dto.ClientResponse;
 import com.kodlamaio.commonpackage.dto.GetProductResponse;
 import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -14,5 +15,5 @@ public interface StockClient {
 
     @Retry(name = "stock-retry")
     @GetMapping(value = "/api/products/check-product-active{productId}")
-    GetProductResponse checkIfProductActive(@PathVariable UUID productId);
+    ClientResponse checkIfProductActive(@PathVariable UUID productId);
 }
