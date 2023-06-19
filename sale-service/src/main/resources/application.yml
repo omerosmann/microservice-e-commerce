@@ -1,6 +1,6 @@
 spring:
   application:
-    name: stock-service
+    name: sale-service
   cloud:
     config:
       profile: dev

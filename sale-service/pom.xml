@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>microservice.ecommerce</groupId>
-	<artifactId>stock-service</artifactId>
+	<artifactId>sale-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>stock-service</name>
-	<description>Demo project for Spring Boot</description>
+	<name>sale-service</name>
+	<description>This is a sale service for microservice project.</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
@@ -36,6 +36,14 @@
 			<groupId>microservice.ecommerce</groupId>
 			<artifactId>common-package</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.retry</groupId>
+			<artifactId>spring-retry</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aspects</artifactId>
 		</dependency>
 	</dependencies>
 
