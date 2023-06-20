@@ -3,6 +3,7 @@ package microservice.ecommerce.stockservice.api.controllers;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import microservice.ecommerce.commonpackage.dto.GetProductResponse;
+import microservice.ecommerce.commonpackage.utils.constants.Roles;
 import microservice.ecommerce.stockservice.business.abstracts.ProductService;
 import microservice.ecommerce.stockservice.business.dto.requests.creates.CreateProductRequest;
 import microservice.ecommerce.stockservice.business.dto.requests.updates.UpdateProductRequest;
@@ -10,6 +11,9 @@ import microservice.ecommerce.stockservice.business.dto.responses.creates.Create
 import microservice.ecommerce.stockservice.business.dto.responses.gets.GetAllProductsResponse;
 import microservice.ecommerce.stockservice.business.dto.responses.updates.UpdateProductResponse;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,12 +25,17 @@ import java.util.UUID;
 public class ProductsController {
     private final ProductService service;
 
+    //Secured,PreAuthorize,PostAuthorize
+    //@Secured("ROLE_admin")
+    @PreAuthorize(Roles.AdminAndUser)
     @GetMapping
     public List<GetAllProductsResponse> getAll(@RequestParam(defaultValue = "true") boolean includeState)
     { return service.getAll(includeState); }
 
+
+//    @PostAuthorize("hasRole('admin') || returnObject.price = 10000")
     @GetMapping("/{id}")
-    public GetProductResponse getById(@PathVariable UUID id)
+    public GetProductResponse getById(@PathVariable UUID id,Jwt jwt)
     { return service.getById(id); }
 
     @PostMapping

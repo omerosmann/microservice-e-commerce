@@ -9,6 +9,48 @@ services:
     volumes:
       - kafka_data:/opt/kafka/kafka-logs
 
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: keycloak-2
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    ports:
+      - "8080:8080"
+    command: start-dev
+    volumes:
+      - .:/opt/jboss/keycloak/imports
+
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin-2
+    ports:
+      - "9411:9411"
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus-2
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - monitor-net
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana-2
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SECURITY_ADMIN_USER:admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - grafana_config:/etc/grafana
+    networks:
+      - monitor-net
+
   mongodb:
     container_name: filterdb
     image: mongo
@@ -27,6 +69,12 @@ services:
 
 
 volumes:
+  grafana_data:
+  grafana_config:
   kafka_data:
   mongodb_data:
   mongodb_data_invoice:
+
+networks:
+  monitor-net:
+    driver: bridge
